@@ -27,6 +27,21 @@ const startGame = async () => {
   if (!hasUserWon) {
     console.log(`Sorry! You lose. Correct answer is ${computerNumber}`);
   }
+
+  const playAgain = await inquirer.prompt([
+    {
+      name: "tryAgain",
+      message: "Press any key to try again and q to quit",
+    },
+  ]);
+
+  if (playAgain.tryAgain.toLowerCase() === "q") {
+    process.exit();
+  } else {
+    triesRemaining = 3;
+    hasUserWon = false;
+    startGame();
+  }
 };
 
 startGame();
