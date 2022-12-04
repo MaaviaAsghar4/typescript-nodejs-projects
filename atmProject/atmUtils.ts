@@ -33,6 +33,26 @@ const displayReceipt = (
   console.log("\x1b[32m", "***********************************************");
 };
 
+const updateUsersInfo = (userInfo: UserInfo, balanceRemaining: number) => {
+  try {
+    fs.readFile("sampleData.json", (err, data) => {
+      if (err) throw err;
+      let users = JSON.parse(data.toString());
+      let index = users.findIndex(
+        (user: UserInfo) =>
+          user.username === userInfo.username &&
+          user.password === userInfo.password
+      );
+      users[index] = { ...userInfo, balance: balanceRemaining };
+      fs.writeFile("sampleData.json", JSON.stringify(users), (err) => {
+        if (err) throw err;
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const withdrawCash = async (userInfo: UserInfo) => {
   try {
     const { amount } = await inquirer.prompt([
@@ -52,6 +72,7 @@ export const withdrawCash = async (userInfo: UserInfo) => {
     }
     let balanceRemaining = userInfo.balance - amount;
     displayReceipt(RecieptType.WITHDRAW_CASE, balanceRemaining, amount);
+    updateUsersInfo(userInfo, balanceRemaining);
   } catch (error) {
     console.error(error);
   }
