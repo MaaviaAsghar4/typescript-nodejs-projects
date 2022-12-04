@@ -1,4 +1,6 @@
 import inquirer from "inquirer";
+import { UserInfo } from "./types.js";
+import fs from "fs";
 
 enum RecieptType {
   WITHDRAW_CASE,
@@ -31,35 +33,67 @@ const displayReceipt = (
   console.log("\x1b[32m", "***********************************************");
 };
 
-export const withdrawCash = async () => {
-  const amount = await inquirer.prompt([
-    {
-      type: "number",
-      message: "Enter the amount you wish to draw",
-      name: "amount",
-    },
-  ]);
+export const withdrawCash = async (userInfo: UserInfo) => {
+  try {
+    const { amount } = await inquirer.prompt([
+      {
+        type: "number",
+        message: "Enter the amount you wish to draw",
+        name: "amount",
+      },
+    ]);
 
-  console.log(amount, "amount");
-  displayReceipt(RecieptType.WITHDRAW_CASE, 2000, 90);
+    if (amount > userInfo.balance) {
+      console.log(
+        "\x1b[31m",
+        "**** You do not have sufficient balance in your account ****"
+      );
+      return;
+    }
+    let balanceRemaining = userInfo.balance - amount;
+    displayReceipt(RecieptType.WITHDRAW_CASE, balanceRemaining, amount);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const checkBalance = async () => {
-  displayReceipt(RecieptType.BALANCE_CHECK, 3000);
+export const checkBalance = async (userInfo: UserInfo) => {
+  try {
+    displayReceipt(RecieptType.BALANCE_CHECK, userInfo.balance);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const verifyUser = async () => {
-  const userName = await inquirer.prompt([
-    {
-      name: "username",
-      message: "Enter your username:",
-    },
-    {
-      name: "password",
-      type: "password",
-      message: "Enter your password:",
-    },
-  ]);
+export const verifyUser = async (): Promise<UserInfo | void> => {
+  try {
+    const userInfo = await inquirer.prompt([
+      {
+        name: "username",
+        message: "Enter your username:",
+      },
+      {
+        name: "password",
+        type: "password",
+        message: "Enter your password:",
+      },
+    ]);
 
-  console.log(userName);
+    let data = fs.readFileSync("sampleData.json");
+    let usersData = JSON.parse(data.toString());
+    let userData = usersData.find(
+      (user: UserInfo) =>
+        user.username === userInfo.username &&
+        user.password === userInfo.password
+    );
+
+    if (userData && Object.keys(userData).length) {
+      return { ...userData, success: true };
+    }
+
+    return;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
 };

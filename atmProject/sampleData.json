@@ -1,24 +1,22 @@
-{
-  "data": [
-    {
-      "username": "John Doe",
-      "password": "123456",
-      "balance": 32000
-    },
-    {
-      "username": "Christina Harvey",
-      "password": "0987654",
-      "balance": 78000
-    },
-    {
-      "username": "Harry Wood",
-      "password": "abc123",
-      "balance": 3000
-    },
-    {
-      "username": "Mike Ross",
-      "password": "543mnb",
-      "balance": 0
-    }
-  ]
-}
+[
+  {
+    "username": "John Doe",
+    "password": "123456",
+    "balance": 32000
+  },
+  {
+    "username": "Christina Harvey",
+    "password": "0987654",
+    "balance": 78000
+  },
+  {
+    "username": "Harry Wood",
+    "password": "abc123",
+    "balance": 3000
+  },
+  {
+    "username": "Mike Ross",
+    "password": "543mnb",
+    "balance": 0
+  }
+]
