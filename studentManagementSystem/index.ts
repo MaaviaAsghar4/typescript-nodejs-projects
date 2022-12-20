@@ -8,7 +8,11 @@ const startApp = async () => {
       type: "list",
       message: "What would you like to do today",
       choices: [
-        "View Info",
+        "Sign Up", 
+        "Sign In",
+        "View balance",
+        "Pay tution fee",
+        "Show Status",
         "Enroll in a new course",
         "List all available courses",
         "Add a new course",
