@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs/promises";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -8,20 +8,11 @@ class FSService {
     static __filePath = join(this.__dirname, "..", "UserStorage", "users.json");
 
     static readFile() {
-       fs.readFile(this.__filePath, (err, data) => {
-            if (err) {
-                throw err
-            }
-            let _data = JSON.parse(data.toString());
-            console.log(_data)
-       })
+        return fs.readFile(this.__filePath);
     }
 
     static writeToFile(data:string) {
-        fs.writeFile(this.__filePath, data, (err) => {
-            if (err) throw err;
-            console.log("write successful")
-        } )
+        return fs.writeFile(this.__filePath, data)
     }
 }
 

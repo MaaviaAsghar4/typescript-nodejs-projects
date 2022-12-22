@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-
+import FSService from "./common/Services/FSService.js";
 const startApp = async () => {
   console.log("Welcome to the SMS");
   const { operation } = await inquirer.prompt([
@@ -19,8 +19,6 @@ const startApp = async () => {
       ],
     },
   ]);
-
-  console.log(operation);
 };
 
 startApp();
