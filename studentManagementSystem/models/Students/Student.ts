@@ -2,33 +2,37 @@ import StudentBase from "./StudentBase.js";
 
 class Student extends StudentBase {
 
-    protected _balance = 0;
-    protected _courses: string[] = [];
+    protected balance = 0;
+    protected courses: string[] = [];
 
     constructor(name:string, email:string, password:string) {
         super(name, email, password)
     }
 
-    get balance() {
-        return this._balance;
+    get _balance() {
+        return this.balance;
     }
 
-    set balance(amount:number) {
-        this._balance = amount;
+    set _balance(amount:number) {
+        this.balance = amount;
     }
 
-    get courses() {
-        return this._courses;
+    get _courses() {
+        return this.courses;
+    }
+    
+    set _courses(_course: string[]) {
+        this.courses = _course;
     }
 
     enrollInNewCourse(subject:string) {
-        this._courses.push(subject);
+        this.courses.push(subject);
     }
 
     showStatus() {
         return {
-            balance: this.balance,
-            courses: this.courses,
+            balance: this._balance,
+            courses: this._courses,
             ...super.getInfo()
         }
     }
