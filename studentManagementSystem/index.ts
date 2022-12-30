@@ -1,26 +1,27 @@
-import inquirer from "inquirer";
-import AuthService from "./common/Services/AuthService.js";
-const startApp = async () => {
-  console.log("Welcome to the SMS");
-  // const { operation } = await inquirer.prompt([
-  //   {
-  //     name: "operation",
-  //     type: "list",
-  //     message: "What would you like to do today",
-  //     choices: [
-  //       "Sign Up", 
-  //       "Sign In",
-  //       "View balance",
-  //       "Pay tution fee",
-  //       "Show Status",
-  //       "Enroll in a new course",
-  //       "List all available courses",
-  //       "Add a new course",
-  //     ],
-  //   },
-  // ]);
+import userStore from "./common/Store/UserStore.js";
+import AppController from "./app.controller.js"
 
-  AuthService.signUp("Maavia3", "maavia3@sms.com", "password3");
+const startApp = () => {
+    console.log("Welcome to the SMS");
+    const { name, email } = userStore.getUserInfo();
+    if (name && email) {
+        AppController.listUserOperations()
+            .then((result) => {
+                console.log(result)
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
+    } else {
+        AppController.authorizeUser()
+            .then((result) => {
+                console.log(result)
+                startApp();
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
+    }
 };
 
 startApp();
