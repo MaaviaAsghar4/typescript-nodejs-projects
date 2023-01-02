@@ -1,18 +1,16 @@
-{
-    "users": [
-        {
-            "name": "Maavia",
-            "email": "maavia@sms.com",
-            "password": "password",
-            "balance": 1000,
-            "courses": []
-        },
-        {
-            "name": "Maavia2",
-            "email": "maavia2@sms.com",
-            "password": "password2",
-            "balance": 1000,
-            "courses": []
-        }
-    ]
-}
+[
+    {
+        "name": "Maavia",
+        "email": "maavia@sms.com",
+        "password": "password",
+        "balance": 1000,
+        "courses": []
+    },
+    {
+        "name": "Maavia2",
+        "email": "maavia2@sms.com",
+        "password": "password2",
+        "balance": 1000,
+        "courses": []
+    }
+]

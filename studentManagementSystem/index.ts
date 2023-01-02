@@ -7,7 +7,7 @@ const startApp = () => {
     if (User.name && User.email) {
         AppController.listUserOperations()
             .then(() => {
-                console.clear()
+                // console.clear()
             })
             .catch(err => {
                 console.log(err.message)
@@ -15,7 +15,7 @@ const startApp = () => {
     } else {
         AppController.authorizeUser()
             .then((result:Student) => {
-                console.clear()
+                // console.clear()`
                 console.log(`What would you like to do ${result.name}`)
                 startApp();
             })

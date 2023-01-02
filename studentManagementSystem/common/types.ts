@@ -13,3 +13,11 @@ export interface ICourse {
     teacher: string;
     tuitionFee: number;
 }
+
+export interface IUserInfo {
+    name: string,
+    email: string,
+    password: string,
+    balance: number,
+    courses: ICourse[]
+}

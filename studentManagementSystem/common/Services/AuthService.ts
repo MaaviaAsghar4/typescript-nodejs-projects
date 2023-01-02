@@ -1,5 +1,6 @@
 import Student from "../../models/Students/Student.js"
 import userStore from "../Store/UserStore.js";
+import { IUserInfo } from "../types.js";
 import FSService from "./FSService.js";
 class AuthService {
 
@@ -18,9 +19,9 @@ class AuthService {
             FSService.readFile()
                 .then((result) => {
                     let data = JSON.parse(result.toString());
-                    let isUserExist = this.checkIfUserAlreadyExist(data.users, email);
+                    let isUserExist = this.checkIfUserAlreadyExist(data, email);
                     if (isUserExist) throw new Error("User already exists");
-                    data.users = [...data.users, { ...newStudent }]
+                    data = [...data, { ...newStudent }]
                     FSService.writeToFile(JSON.stringify(data))
                     userStore.setUserInfo(newStudent);
                     console.log("Sign Up Successful")
@@ -38,8 +39,8 @@ class AuthService {
             FSService.readFile()
                 .then((result) => {
                     let data = JSON.parse(result.toString());
-                    if (!data.users.length) throw Error("No user found");
-                    let user = data.users.find((usr: any) => usr.email === email && usr.password === password);
+                    if (!data.length) throw Error("No user found");
+                    let user = data.find((usr: IUserInfo) => usr.email === email && usr.password === password);
                     if (!Object.keys(user).length) throw Error("Incorrect credentials");
                     let newStudent = new Student(user.name, user.email, user.password);
                     newStudent._balance = user.balance;

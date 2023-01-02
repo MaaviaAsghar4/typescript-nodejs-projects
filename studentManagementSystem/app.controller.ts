@@ -41,10 +41,10 @@ class AppController {
 
     static goBack = () => {
         inquirer.prompt([
-            { 
-                name: "goBack", 
-                message: "What would you like to do next?", 
-                type: "list", 
+            {
+                name: "goBack",
+                message: "What would you like to do next?",
+                type: "list",
                 choices: ["Go back", "Exit"]
             },
         ])
@@ -59,12 +59,10 @@ class AppController {
     static userOperations = (student: Student, operation: string) => {
         switch (operation) {
             case "View balance":
-                console.clear()
                 console.log(`${student.name}, your balance is ${student._balance}`)
                 this.goBack()
                 break;
             case "Show Status":
-                console.clear()
                 console.log("Your Status")
                 console.log(`Name: ${student.name}`)
                 console.log(`Email: ${student.email}`)
@@ -99,7 +97,16 @@ class AppController {
                             totalFee += course.tuitionFee
                         })
                         student.enrollInNewCourse(selectedCourses, totalFee)
-                        FSService.writeToFile(JSON.stringify(student))
+                        FSService.readFile()
+                            .then((result) => {
+                                let data = JSON.parse(result.toString());
+                                let users = data.filter((usr: Student) => usr.email !== student.email);
+                                users = [...users, student]
+                                FSService.writeToFile(JSON.stringify(users))
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
                         this.goBack()
                     })
                 break;
@@ -137,10 +144,10 @@ class AppController {
                 .then(({ operation }) => {
                     if (operation === "Sign Up") {
                         this.signUp()
-                            .then((result:IUser) => {
+                            .then((result: IUser) => {
                                 const { username, email, password } = result;
                                 AuthService.signUp(username!, email, password)
-                                    .then((result:Student) => {
+                                    .then((result: Student) => {
                                         res(result)
                                     })
                                     .catch(err => {
@@ -152,10 +159,10 @@ class AppController {
                             })
                     } else {
                         this.signIn()
-                            .then((result:IUser) => {
+                            .then((result: IUser) => {
                                 const { email, password } = result;
                                 AuthService.signIn(email, password)
-                                    .then((result:Student) => {
+                                    .then((result: Student) => {
                                         res(result)
                                     })
                                     .catch(err => {
@@ -174,27 +181,25 @@ class AppController {
     }
 
     static listUserOperations() {
-        return new Promise((res, rej) => {
-            inquirer.prompt([
-                {
-                    name: "operation",
-                    type: "list",
-                    message: "What would you like to do today",
-                    choices: [
-                        "View balance",
-                        "Show Status",
-                        "Enroll in a new course",
-                        "List all available courses",
-                    ],
-                },
-            ])
-                .then(({ operation }) => {
-                    this.userOperations(userStore.getUserInfo() ,operation)
-                })
-                .catch(err => {
-                    rej(err)
-                })
-        })
+        return inquirer.prompt([
+            {
+                name: "operation",
+                type: "list",
+                message: "What would you like to do today",
+                choices: [
+                    "View balance",
+                    "Show Status",
+                    "Enroll in a new course",
+                    "List all available courses",
+                ],
+            },
+        ])
+            .then(({ operation }) => {
+                this.userOperations(userStore.getUserInfo(), operation)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 }
 
