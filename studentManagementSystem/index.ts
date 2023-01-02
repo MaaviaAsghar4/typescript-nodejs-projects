@@ -1,21 +1,22 @@
 import userStore from "./common/Store/UserStore.js";
 import AppController from "./app.controller.js"
+import Student from "./models/Students/Student.js";
 
 const startApp = () => {
-    console.log("Welcome to the SMS");
-    const { name, email } = userStore.getUserInfo();
-    if (name && email) {
+    const User = userStore.getUserInfo();
+    if (User.name && User.email) {
         AppController.listUserOperations()
-            .then((result) => {
-                console.log(result)
+            .then(() => {
+                console.clear()
             })
             .catch(err => {
                 console.log(err.message)
             })
     } else {
         AppController.authorizeUser()
-            .then((result) => {
-                console.log(result)
+            .then((result:Student) => {
+                console.clear()
+                console.log(`What would you like to do ${result.name}`)
                 startApp();
             })
             .catch(err => {

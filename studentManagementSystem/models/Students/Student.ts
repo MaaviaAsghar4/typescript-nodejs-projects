@@ -1,9 +1,10 @@
+import { ICourse } from "../../common/types.js";
 import StudentBase from "./StudentBase.js";
 
 class Student extends StudentBase {
 
     protected balance = 0;
-    protected courses: string[] = [];
+    protected courses: ICourse[] = [];
 
     constructor(name:string, email:string, password:string) {
         super(name, email, password)
@@ -21,12 +22,17 @@ class Student extends StudentBase {
         return this.courses;
     }
     
-    set _courses(_course: string[]) {
+    set _courses(_course: ICourse[]) {
         this.courses = _course;
     }
 
-    enrollInNewCourse(subject:string) {
-        this.courses.push(subject);
+    enrollInNewCourse(subjects:ICourse[], totalFee: number) {
+        if (this._balance < totalFee) {
+            console.log("Not enough balance")
+            return
+        }
+        this.courses = [...this.courses, ...subjects];
+        this._balance = this._balance - totalFee;
     }
 
     showStatus() {

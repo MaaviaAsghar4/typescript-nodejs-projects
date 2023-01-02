@@ -1,21 +1,15 @@
+import Student from "../../models/Students/Student.js";
 
 class UserStore {
-    private _name = "";
-    private _email = "";
-    private _balance = 0;
+    private emptyUser = new Student("", "", "")
+    private userInfo = this.emptyUser
 
     getUserInfo() {
-        return {
-            name: this._name,
-            email: this._email,
-            balance: this._balance,
-        }
+        return this.userInfo
     }
 
-    setUserInfo(name:string, email:string, balance:number) {
-        this._name = name;
-        this._email = email;
-        this._balance = balance;
+    setUserInfo(userInfo:Student) {
+        this.userInfo = userInfo
     }
 
 }
