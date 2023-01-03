@@ -1,5 +1,6 @@
 import { Router } from "../common/expressConfigs.js";
 import bookController from "../controller/bookController.js";
+import authorizer from "../middlewares/authMiddleware.js";
 
 class BookRoute {
     public router;
@@ -10,12 +11,12 @@ class BookRoute {
 
     setupBookRoute() {
         this.router.route("/")
-            .get(bookController.getBooks)
-            .post(bookController.addNewBook);
+            .get(authorizer, bookController.getBooks)
+            .post(authorizer, bookController.addNewBook);
         this.router.route("/:id")
-            .get(bookController.getBookById)
-            .delete(bookController.deleteBook)
-            .put(bookController.updateBook);
+            .get(authorizer, bookController.getBookById)
+            .delete(authorizer, bookController.deleteBook)
+            .put(authorizer, bookController.updateBook);
     }
 }
 
