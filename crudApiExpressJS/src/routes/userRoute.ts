@@ -1,4 +1,5 @@
 import { Router } from "../common/expressConfigs.js";
+import userController from "../controller/userController.js";
 
 class UserRoute {
     public router;
@@ -8,8 +9,8 @@ class UserRoute {
     }
 
     setupUserRoute() {
-        this.router.post("/signin", (req, res) => res.send({"users": {}}))
-        this.router.post("/signup", (req, res) => res.send({"newUsers": {}}))
+        this.router.post("/signin", userController.signIn)
+        this.router.post("/signup", userController.signUp)
     }
 }
 

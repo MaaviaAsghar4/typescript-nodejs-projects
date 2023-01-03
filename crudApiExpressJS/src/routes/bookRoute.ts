@@ -1,4 +1,5 @@
 import { Router } from "../common/expressConfigs.js";
+import bookController from "../controller/bookController.js";
 
 class BookRoute {
     public router;
@@ -9,11 +10,12 @@ class BookRoute {
 
     setupBookRoute() {
         this.router.route("/")
-            .get((req, res) => res.send({"books": []}))
-            .post((req, res) => res.send({"newBook": []}));
+            .get(bookController.getBooks)
+            .post(bookController.addNewBook);
         this.router.route("/:id")
-            .delete((req, res) => res.send({"delete": []}))
-            .put((req, res) => res.send({"put": []}));
+            .get(bookController.getBookById)
+            .delete(bookController.deleteBook)
+            .put(bookController.updateBook);
     }
 }
 
