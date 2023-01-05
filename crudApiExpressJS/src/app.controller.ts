@@ -1,7 +1,8 @@
 import express from "express";
 import userRoute from "./routes/userRoute.js";
 import bookRoute from "./routes/bookRoute.js";
-
+import passport from "passport";
+import PassportAuthService from "./services/PassportAuthService.js";
 class StartAppWithExpress {
     public app;
     public port;
@@ -17,11 +18,12 @@ class StartAppWithExpress {
     setUpMiddlewares() {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
+        PassportAuthService(passport);
     }
 
     setUpRoutes() {
-        this.app.use("/api/users", userRoute);
-        this.app.use("/api/books", bookRoute);
+        this.app.use("/api/users",  userRoute);
+        this.app.use("/api/books", passport.authenticate("jwt", { session: false }), bookRoute);
     }
 
     startServer() {

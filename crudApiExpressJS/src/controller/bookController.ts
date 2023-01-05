@@ -25,8 +25,8 @@ class BookController {
     addNewBook =(req: Request, res: Response) => {
         const { bookId, bookName, bookAuthor } = req.body;
         if (!bookAuthor || !bookId || !bookName) {
-            res.status(400)
-            throw new Error("Incomplete information")
+            res.status(400).json({msg: "bookId, bookName, and bookAuthor is required"})
+            return
         }
         let isBookExist = this.checkIfBookExist(bookId)
         if (isBookExist) {
@@ -39,8 +39,8 @@ class BookController {
 
     deleteBook = (req: Request, res: Response) => {
         if (!req.params.id) {
-            res.status(400)
-            throw new Error("Book id is mandatory")
+            res.status(400).json({msg: "bookId is required"})
+            return
         }
         books = books.filter((bk) => bk.bookId !== req.params.id);
         res.status(200).json({"msg": "success"});
@@ -48,8 +48,8 @@ class BookController {
 
     updateBook = (req: Request, res: Response) => {
         if (!req.params.id) {
-            res.status(400)
-            throw new Error("Book id is mandatory")
+            res.status(400).json({msg: "bookId is required"})
+            return
         }
         let index = books.findIndex((bk) => bk.bookId === req.params.id);
         if (index !== -1) {
@@ -57,8 +57,8 @@ class BookController {
             res.status(200).json({"msg": "success"});
             return
         }
-        res.status(400)
-        throw new Error("Book not found")
+        res.status(400).json({msg: "book not found"})
+        return
     }
 }
 

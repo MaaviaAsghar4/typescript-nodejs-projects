@@ -1,19 +1,36 @@
-import { NextFunction, Request, Response } from "express";
+// import { NextFunction, Request, Response } from "express";
+import crypto from "crypto";
+import jsonwebtoken from "jsonwebtoken";
+import { IUser } from "../data/users.js";
 
-const authorizer = (req: Request, res: Response, next: NextFunction) => {
-    let authorization = req.headers.authorization;
-    if (!authorization || !authorization.startsWith("Bearer")) {
-        res.status(400);
-        throw new Error("Unauthorized user")
+
+class AuthMiddleware {
+
+    static generateHashPassword = (password:string) => {
+        let salt = crypto.randomBytes(32).toString("hex");
+        let hash = crypto.pbkdf2Sync(password, salt, 10000, 64, "sha512").toString("hex");
+        return { salt, hash };
     }
 
-    const token = authorization.split(" ")[1];
-    if (!token) {
-        res.status(400);
-        throw new Error("Unauthorized user")
+    static checkIsPasswordValid = (password:string, hash:string, salt:string) => {
+        let hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, "sha512").toString("hex");
+        return hash === hashVerify
     }
 
-    next()
+    static issueJWT(user:IUser) {
+        const expiresIn = "1d";
+        const payload = {
+            sub: user.email,
+            iat: Date.now()
+        };
+
+        const signedToken = jsonwebtoken.sign(payload, "my-secret", { expiresIn });
+
+        return {
+            token: "Bearer " + signedToken,
+            expiresIn
+        }
+    }
 }
 
-export default authorizer;
+export default AuthMiddleware;
