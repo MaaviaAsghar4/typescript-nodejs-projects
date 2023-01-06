@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { IBooks } from '../data/books.js';
-import { IUser } from '../data/users.js';
+import { IUser, IBooks } from '../types/types.js';
 const prisma = new PrismaClient();
 
 class DatabaseService {
@@ -112,6 +111,9 @@ class DatabaseService {
                 .catch(err => {
                     rej(err.message)
                 })
+                .finally(() => {
+                    this.prisma.$disconnect()
+                })
         })
     };
 
@@ -128,6 +130,9 @@ class DatabaseService {
                 })
                 .catch(err => {
                     rej(err.message)
+                })
+                .finally(() => {
+                    this.prisma.$disconnect()
                 })
         })
     };

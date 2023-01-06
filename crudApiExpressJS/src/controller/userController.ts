@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Users, IUser } from "../data/users.js";
 import AuthMiddleware from "../middlewares/authMiddleware.js";
 import DatabaseService from "../services/DatabaseService.js";
 

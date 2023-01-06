@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import { Books, IBooks} from "../data/books.js";
 import DatabaseService from "../services/DatabaseService.js";
 
-let books:IBooks[] = JSON.parse(JSON.stringify(Books));
 
 class BookController {
 

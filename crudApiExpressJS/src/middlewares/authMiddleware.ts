@@ -1,7 +1,7 @@
 // import { NextFunction, Request, Response } from "express";
 import crypto from "crypto";
 import jsonwebtoken, { Secret } from "jsonwebtoken";
-import { IUser } from "../data/users.js";
+import { IUser } from "../types/types.js";
 
 
 class AuthMiddleware {
