@@ -1,6 +1,6 @@
 // import { NextFunction, Request, Response } from "express";
 import crypto from "crypto";
-import jsonwebtoken from "jsonwebtoken";
+import jsonwebtoken, { Secret } from "jsonwebtoken";
 import { IUser } from "../data/users.js";
 
 
@@ -24,7 +24,7 @@ class AuthMiddleware {
             iat: Date.now()
         };
 
-        const signedToken = jsonwebtoken.sign(payload, "my-secret", { expiresIn });
+        const signedToken = jsonwebtoken.sign(payload, process.env.JWT_SECRET as Secret, { expiresIn });
 
         return {
             token: "Bearer " + signedToken,
