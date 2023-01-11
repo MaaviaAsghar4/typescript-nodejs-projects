@@ -1,5 +1,6 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { SignInDTO, SignUpDTO } from './dto';
 // import { PrismaClient } from '@prisma/client';
 // const prisma = new PrismaClient();
 
@@ -8,12 +9,12 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  login() {
-    return this.authService.login();
+  login(@Body() dto: SignInDTO) {
+    return this.authService.login(dto);
   }
 
   @Post('signup')
-  signup() {
-    return this.authService.signup();
+  signup(@Body() dto: SignUpDTO) {
+    return this.authService.signup(dto);
   }
 }
