@@ -1,5 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
+// import { PrismaClient } from '@prisma/client';
+// const prisma = new PrismaClient();
 
 @Controller('auth')
 export class AuthController {
@@ -7,11 +9,11 @@ export class AuthController {
 
   @Post('login')
   login() {
-    return 'login';
+    return this.authService.login();
   }
 
   @Post('signup')
   signup() {
-    return 'signup';
+    return this.authService.signup();
   }
 }
