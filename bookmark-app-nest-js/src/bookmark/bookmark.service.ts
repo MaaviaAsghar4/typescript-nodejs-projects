@@ -15,10 +15,10 @@ export class BookmarkService {
   }
 
   getBookmarkById(userId: string, bookmarkId: string) {
-    return this.prisma.bookmark.findUnique({
+    return this.prisma.bookmark.findFirst({
       where: {
-        userId,
         id: bookmarkId,
+        userId,
       },
     });
   }

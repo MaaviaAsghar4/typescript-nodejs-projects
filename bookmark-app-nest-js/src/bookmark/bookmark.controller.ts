@@ -8,11 +8,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorator';
+import { JWTGuard } from 'src/auth/guard';
 import { BookmarkService } from './bookmark.service';
 import { CreateBookmarkDTO, EditBookmarkDTO } from './dto';
 
+@UseGuards(JWTGuard)
 @Controller('bookmarks')
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
